@@ -47,12 +47,12 @@ const Login = ({ setToken }) => {
   };
 
   return (
-    <div className="relative flex flex-col justify-center items-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 p-4 overflow-hidden">
+    <div className="relative flex flex-col items-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 p-4 overflow-hidden">
       <Toaster />
-      <h1 className="text-4xl font-bold mb-6 text-center text-blue-400 animate-fadeIn">
+      <h1 className="text-4xl font-bold mb-6 text-center text-blue-400 animate-fadeIn my-5">
         Welcome Back to NeoNotes
       </h1>
-      <p className="text-lg text-gray-300 mb-8 text-center max-w-2xl animate-fadeInSlow">
+      <p className="text-lg text-gray-300 mb-8 text-center max-w-2xl animate-fadeInSlow mt-4">
         Access your notes anytime, anywhere. Log in now to continue organizing
         your thoughts seamlessly.
       </p>
@@ -71,7 +71,7 @@ const Login = ({ setToken }) => {
       ))}
 
       <form
-        className="w-full max-w-sm p-6 bg-white shadow-lg rounded-lg relative z-10"
+        className="w-full max-w-sm p-6 bg-white shadow-lg rounded-lg relative z-10 mt-7"
         onSubmit={handleOnSubmit}
       >
         <h1 className="text-2xl font-semibold text-center mb-4 text-gray-700">

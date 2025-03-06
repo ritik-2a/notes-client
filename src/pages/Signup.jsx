@@ -43,18 +43,31 @@ const Signup = () => {
   };
 
   return (
-    <div className="relative flex justify-center items-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 p-4 overflow-hidden">
+    <div className="relative flex flex-col items-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 p-4 overflow-hidden">
       <Toaster />
-      <h1 className="text-4xl font-bold mb-6 text-center text-blue-400 animate-fadeIn">
+      <h1 className="text-4xl font-bold mb-6 text-center text-blue-400 animate-fadeIn my-5">
         Join NeoNotes Today!
       </h1>
-      <p className="text-lg text-gray-300 mb-8 text-center max-w-2xl animate-fadeInSlow">
+      <p className="text-lg text-gray-300 mb-8 text-center max-w-2xl animate-fadeInSlow my-5">
         Get started with smart note-taking. Sign up now and experience
         effortless organization.
       </p>
 
+      {/* Animated Moving Balls */}
+      {[...Array(10)].map((_, i) => (
+        <div
+          key={i}
+          className="absolute w-4 h-4 bg-blue-400 rounded-full opacity-75 animate-ball"
+          style={{
+            top: `${Math.random() * 100}vh`,
+            left: `${Math.random() * 100}vw`,
+            animationDelay: `${Math.random() * 5}s`,
+          }}
+        ></div>
+      ))}
+
       <form
-        className="w-full max-w-sm p-6 bg-white shadow-lg rounded-lg relative z-10"
+        className="w-full max-w-sm p-6 bg-white shadow-lg rounded-lg relative z-10 m-y-7"
         onSubmit={handleRequestOtp}
       >
         <h1 className="text-2xl font-semibold text-center mb-4 text-gray-700">
@@ -99,6 +112,29 @@ const Signup = () => {
           </Link>
         </p>
       </form>
+
+      {/* Tailwind Keyframes for Ball Animation */}
+      <style>
+        {`
+          @keyframes moveBalls {
+            0% {
+              transform: translateY(0px) translateX(0px);
+              opacity: 0.8;
+            }
+            50% {
+              transform: translateY(-50px) translateX(30px);
+              opacity: 0.6;
+            }
+            100% {
+              transform: translateY(0px) translateX(0px);
+              opacity: 0.8;
+            }
+          }
+          .animate-ball {
+            animation: moveBalls 5s infinite alternate ease-in-out;
+          }
+        `}
+      </style>
     </div>
   );
 };
