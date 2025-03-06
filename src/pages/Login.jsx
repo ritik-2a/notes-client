@@ -47,7 +47,7 @@ const Login = ({ setToken }) => {
   };
 
   return (
-    <div className="relative flex justify-center items-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 p-4 overflow-hidden">
+    <div className="relative flex flex-col justify-center items-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 p-4 overflow-hidden">
       <Toaster />
       <h1 className="text-4xl font-bold mb-6 text-center text-blue-400 animate-fadeIn">
         Welcome Back to NeoNotes
