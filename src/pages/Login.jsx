@@ -6,7 +6,7 @@ import axios from "axios";
 import { validEmail } from "../utils/helper.js";
 import { BASE_URL } from "../utils/helper.js";
 
-const Login = ({setToken}) => {
+const Login = ({ setToken }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -34,7 +34,7 @@ const Login = ({setToken}) => {
 
       localStorage.setItem("jwt", data.user.token);
       // Reset form fields
-      setToken(localStorage.getItem("jwt"))
+      setToken(localStorage.getItem("jwt"));
       setEmail("");
       setPassword("");
       navigate("/");
@@ -49,6 +49,13 @@ const Login = ({setToken}) => {
   return (
     <div className="relative flex justify-center items-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 p-4 overflow-hidden">
       <Toaster />
+      <h1 className="text-4xl font-bold mb-6 text-center text-blue-400 animate-fadeIn">
+        Welcome Back to NeoNotes
+      </h1>
+      <p className="text-lg text-gray-300 mb-8 text-center max-w-2xl animate-fadeInSlow">
+        Access your notes anytime, anywhere. Log in now to continue organizing
+        your thoughts seamlessly.
+      </p>
 
       {/* Animated Moving Balls */}
       {[...Array(10)].map((_, i) => (

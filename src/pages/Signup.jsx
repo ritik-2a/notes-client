@@ -38,13 +38,20 @@ const Signup = () => {
       navigate("/otp-verify", { state: { username, email, password } });
     } catch (error) {
       toast.error(error.response?.data?.error || "Failed to send OTP.");
-      navigate("/login")
+      navigate("/login");
     }
   };
 
   return (
     <div className="relative flex justify-center items-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 p-4 overflow-hidden">
       <Toaster />
+      <h1 className="text-4xl font-bold mb-6 text-center text-blue-400 animate-fadeIn">
+        Join NeoNotes Today!
+      </h1>
+      <p className="text-lg text-gray-300 mb-8 text-center max-w-2xl animate-fadeInSlow">
+        Get started with smart note-taking. Sign up now and experience
+        effortless organization.
+      </p>
 
       <form
         className="w-full max-w-sm p-6 bg-white shadow-lg rounded-lg relative z-10"
