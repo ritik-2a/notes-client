@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { validEmail } from "../utils/helper.js";
 import { BASE_URL } from "../utils/helper.js";
@@ -9,6 +8,7 @@ import { BASE_URL } from "../utils/helper.js";
 const Login = ({ setToken }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -20,6 +20,8 @@ const Login = ({ setToken }) => {
       return;
     }
 
+    setLoading(true);
+
     try {
       const { data } = await axios.post(
         `${BASE_URL}/api/auth/login`,
@@ -29,11 +31,9 @@ const Login = ({ setToken }) => {
           headers: { "Content-Type": "application/json" },
         }
       );
-      // Show success toast
-      toast.success(data.message || "Login successfully!");
 
+      toast.success(data.message || "Login successfully!");
       localStorage.setItem("jwt", data.user.token);
-      // Reset form fields
       setToken(localStorage.getItem("jwt"));
       setEmail("");
       setPassword("");
@@ -43,6 +43,8 @@ const Login = ({ setToken }) => {
       toast.error(
         error.response?.data?.errors || "Failed to Login user. Try again!"
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -70,6 +72,13 @@ const Login = ({ setToken }) => {
         ></div>
       ))}
 
+      {/* Loader Overlay */}
+      {loading && (
+        <div className="fixed inset-0 backdrop-blur-md bg-transparent flex items-center justify-center z-50">
+          <div className="loader ease-linear rounded-full border-8 border-t-8 border-blue-500 h-16 w-16"></div>
+        </div>
+      )}
+
       <form
         className="w-full max-w-sm p-6 bg-white shadow-lg rounded-lg relative z-10 mt-7"
         onSubmit={handleOnSubmit}
@@ -83,6 +92,7 @@ const Login = ({ setToken }) => {
           name="email"
           placeholder="Email Address"
           value={email}
+          disabled={loading}
           onChange={(e) => setEmail(e.target.value)}
           className="w-full p-2 mb-3 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none"
         />
@@ -92,15 +102,21 @@ const Login = ({ setToken }) => {
           name="password"
           placeholder="Password"
           value={password}
+          disabled={loading}
           onChange={(e) => setPassword(e.target.value)}
           className="w-full p-2 mb-4 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none"
         />
 
         <button
-          className="w-full bg-blue-600 hover:bg-blue-700 transition-all duration-300 text-white py-2 rounded"
+          className={`w-full ${
+            loading
+              ? "bg-blue-300 cursor-not-allowed"
+              : "bg-blue-600 hover:bg-blue-700"
+          } transition-all duration-300 text-white py-2 rounded`}
           type="submit"
+          disabled={loading}
         >
-          Login
+          {loading ? "Logging in..." : "Login"}
         </button>
 
         <p className="text-center text-gray-600 mt-3">
@@ -111,7 +127,7 @@ const Login = ({ setToken }) => {
         </p>
       </form>
 
-      {/* Tailwind Keyframes for Ball Animation */}
+      {/* Tailwind Keyframes for Ball Animation and Loader */}
       <style>
         {`
           @keyframes moveBalls {
@@ -128,8 +144,19 @@ const Login = ({ setToken }) => {
               opacity: 0.8;
             }
           }
+
           .animate-ball {
             animation: moveBalls 5s infinite alternate ease-in-out;
+          }
+
+          .loader {
+            border-top-color: #00bfff;
+            animation: spin 1s linear infinite;
+          }
+
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
           }
         `}
       </style>

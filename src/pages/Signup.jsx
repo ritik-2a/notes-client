@@ -10,6 +10,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleRequestOtp = async (e) => {
     e.preventDefault();
@@ -18,13 +19,15 @@ const Signup = () => {
       toast.error("Invalid Email");
       return;
     }
+
     if (!validPassword(password)) {
       toast.error("Password must be at least 5 characters long.");
       return;
     }
 
+    setLoading(true); // Start showing loader
+
     try {
-      // Request OTP before creating the user
       const { data } = await axios.post(
         `${BASE_URL}/api/otp/send-otp`,
         { email },
@@ -33,12 +36,12 @@ const Signup = () => {
         }
       );
       toast.success(data.message || "OTP sent to your email!");
-
-      // Navigate to OTP verification page with email and user details
       navigate("/otp-verify", { state: { username, email, password } });
     } catch (error) {
       toast.error(error.response?.data?.error || "Failed to send OTP.");
       navigate("/login");
+    } finally {
+      setLoading(false); // Stop showing loader
     }
   };
 
@@ -53,7 +56,7 @@ const Signup = () => {
         effortless organization.
       </p>
 
-      {/* Animated Moving Balls */}
+      {/* Animated Background Balls */}
       {[...Array(10)].map((_, i) => (
         <div
           key={i}
@@ -65,6 +68,13 @@ const Signup = () => {
           }}
         ></div>
       ))}
+
+      {/* Loading Spinner with Blur */}
+      {loading && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-transparent">
+          <div className="loader ease-linear rounded-full border-8 border-t-8 border-blue-500 h-16 w-16"></div>
+        </div>
+      )}
 
       <form
         className="w-full max-w-sm p-6 bg-white shadow-lg rounded-lg relative z-10 m-y-7"
@@ -99,10 +109,13 @@ const Signup = () => {
         />
 
         <button
-          className="w-full bg-blue-600 hover:bg-blue-700 transition-all duration-300 text-white py-2 rounded"
           type="submit"
+          disabled={loading}
+          className={`w-full ${
+            loading ? "bg-blue-300 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+          } transition-all duration-300 text-white py-2 rounded`}
         >
-          Get OTP
+          {loading ? "Sending OTP..." : "Get OTP"}
         </button>
 
         <p className="text-center text-gray-600 mt-3">
@@ -113,7 +126,7 @@ const Signup = () => {
         </p>
       </form>
 
-      {/* Tailwind Keyframes for Ball Animation */}
+      {/* Custom Styles for Ball Animation & Loader */}
       <style>
         {`
           @keyframes moveBalls {
@@ -132,6 +145,16 @@ const Signup = () => {
           }
           .animate-ball {
             animation: moveBalls 5s infinite alternate ease-in-out;
+          }
+
+          .loader {
+            border-top-color: #00bfff;
+            animation: spin 1s linear infinite;
+          }
+
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
           }
         `}
       </style>
